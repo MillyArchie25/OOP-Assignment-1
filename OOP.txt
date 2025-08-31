@@ -1,0 +1,68 @@
+# Base Class
+class Smartphone:
+    def __init__(self, brand, model, storage, battery_life):
+        self.brand = brand
+        self.model = model
+        self.storage = storage  # in GB
+        self.battery_life = battery_life  # in hours
+        self.power_on = False
+
+    def turn_on(self):
+        if not self.power_on:
+            self.power_on = True
+            print(f"{self.brand} {self.model} is now ON.")
+        else:
+            print(f"{self.brand} {self.model} is already ON.")
+
+    def turn_off(self):
+        if self.power_on:
+            self.power_on = False
+            print(f"{self.brand} {self.model} is now OFF.")
+        else:
+            print(f"{self.brand} {self.model} is already OFF.")
+
+    def check_storage(self):
+        print(f"{self.model} has {self.storage}GB of storage available.")
+
+    def __str__(self):
+        return f"{self.brand} {self.model} | {self.storage}GB | Battery: {self.battery_life}h"
+
+
+# Child Class (Inheritance + Polymorphism)
+class GamingSmartphone(Smartphone):
+    def __init__(self, brand, model, storage, battery_life, cooling_system):
+        # Call parent constructor
+        super().__init__(brand, model, storage, battery_life)
+        self.cooling_system = cooling_system
+
+    # Polymorphism: overriding a method
+    def turn_on(self):
+        super().turn_on()
+        if self.power_on:
+            print(f"Launching gaming mode on {self.model} with {self.cooling_system} cooling system!")
+
+    def play_game(self, game_name):
+        if self.power_on:
+            print(f"Playing {game_name} on {self.model}...")
+            self.battery_life -= 1
+        else:
+            print("Please turn on the phone first!")
+
+    def __str__(self):
+        return super().__str__() + f" | Cooling: {self.cooling_system}"
+        
+
+# Example usage
+if __name__ == "__main__":
+    phone1 = Smartphone("Apple", "iPhone 15", 256, 20)
+    phone2 = GamingSmartphone("Asus", "ROG Phone 7", 512, 18, "Liquid Cooling")
+
+    print(phone1)
+    phone1.turn_on()
+    phone1.check_storage()
+    phone1.turn_off()
+
+    print("\n" + str(phone2))
+    phone2.turn_on()
+    phone2.play_game("Genshin Impact")
+    phone2.check_storage()
